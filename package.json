@@ -9,10 +9,12 @@
   "dependencies": {
     "apollo-client": "^0.5.3",
     "graphql-tag": "^0.1.16",
+    "native-base": "^0.5.22",
     "react": "~15.3.1",
     "react-apollo": "^0.6.0",
     "react-native": "0.39.0",
     "react-native-lock": "^0.4.0",
+    "react-native-vector-icons": "^3.0.0",
     "react-router-native": "^2.0.0-beta.0"
   },
   "devDependencies": {

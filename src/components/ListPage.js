@@ -22,16 +22,13 @@ class ListPage extends React.Component {
       <View>
         <ScrollView>
           <View
-            style={
-              {
+            style={{
               flex: 1,
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              }
-            }
-          >
-              {this.props.data.allPhotos.reverse().map((post) =>
+              }}>
+              {this.props.data.allPhotos.map((post) =>
                 <Post key={post.id} post={post} />
               )}
           </View>

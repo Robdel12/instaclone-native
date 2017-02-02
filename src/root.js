@@ -13,25 +13,27 @@ import { checkUri } from './utils';
 import App from './components/App';
 import ListPage from './components/ListPage';
 import CreatePage from './components/CreatePage';
+import CreateUser from './components/CreateUser';
+import Logout from './components/Logout';
 
-const client = new ApolloClient({
-  networkInterface: createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/ciy4kveic00340143rzx2qgck'}),
-});
-
-client.networkInterface.use([{
+const networkInterface = createNetworkInterface({ uri: 'https://api.graph.cool/simple/v1/ciy4kveic00340143rzx2qgck'});
+networkInterface.use([{
   applyMiddleware (req, next) {
     if (!req.options.headers) {
       req.options.headers = {};
     }
 
-    // get the authentication token from local storage if it exists
-    if (AsyncStorage.getItem('auth0IdToken')) {
-      req.options.headers.authorization = `Bearer ${localStorage.getItem('auth0IdToken')}`;
-    }
-    next();
+    AsyncStorage.getItem('auth0IdToken').then((value) => {
+      // get the authentication token from local storage if it exists
+      req.options.headers.authorization = `Bearer ${value}`;
+      next();
+    });
   }
 }]);
 
+const client = new ApolloClient({
+  networkInterface: networkInterface
+});
 // this is only for better error messages
 checkUri(client.networkInterface);
 
@@ -41,6 +43,8 @@ export default (
       <Route path="/" component={App}>
         <IndexRoute component={ListPage} />
         <Route path="/create" component={CreatePage} />
+        <Route path="/signup" component={CreateUser} />
+        <Route path="/logout" component={Logout} />
       </Route>
     </Router>
   </ApolloProvider>

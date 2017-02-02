@@ -7,9 +7,10 @@ import {
   AUTH_0_DOMAIN
 } from '../env';
 
-// import {
-//   Button,
-// } from 'native-base';
+import {
+  Button,
+  Icon
+} from 'native-base';
 
 const lock = new Auth0Lock({
   clientId: AUTH_0_CLIENT_ID,
@@ -31,14 +32,15 @@ class LoginAuth0 extends Component {
       }
 
       AsyncStorage.setItem('auth0IdToken', token.idToken);
+      this.props.router.push(`/signup`);
     });
   }
 
   render() {
     return (
-      <TouchableHighlight style={{marginTop: 60}} onPress={this.showLogin.bind(this)}>
-        <Text>Login</Text>
-      </TouchableHighlight>
+      <Button onPress={this.showLogin.bind(this)} transparent>
+        {this.props.children}
+      </Button>
     );
   }
 }
