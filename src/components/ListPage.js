@@ -5,6 +5,9 @@ import gql from 'graphql-tag';
 
 import { ScrollView, View, Text, Button } from 'react-native';
 import { withRouter } from 'react-router-native';
+import {
+  Spinner
+} from 'native-base';
 
 class ListPage extends React.Component {
 
@@ -15,7 +18,7 @@ class ListPage extends React.Component {
 
   render () {
     if (this.props.data.loading) {
-      return (<Text>Loading</Text>)
+      return (<Spinner />);
     }
 
     return (
@@ -46,7 +49,7 @@ class ListPage extends React.Component {
   }
 }
 
-const FeedQuery = gql`query { allPhotos { id imageUrl description } }`;
+const FeedQuery = gql`query { allPhotos(orderBy: createdAt_DESC) { id imageUrl description } }`;
 
 const ListPageWithData = graphql(FeedQuery)(ListPage);
 
