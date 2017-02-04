@@ -52,7 +52,7 @@ class UserProfile extends Component {
             Logout
           </Button>
           {this.props.data.user.photos.map(photo => {
-            return <Photo key={photo.id} photo={photo} />;
+            return <Photo key={photo.id} photo={photo} user={this.props.data.user} />;
           })}
         </View>
       </ScrollView>

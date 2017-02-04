@@ -31,7 +31,7 @@ class ListPage extends React.Component {
             alignItems: 'center',
           }}>
           {this.props.data.allPhotos.map(photo => {
-            return <Photo key={photo.id} photo={photo} />;
+            return <Photo key={photo.id} photo={photo} user={photo.user} />;
           })}
         </View>
       </ScrollView>
@@ -45,9 +45,15 @@ class ListPage extends React.Component {
 
 const FeedQuery = gql`query {
   allPhotos(orderBy: createdAt_DESC) {
-    id,
-    imageUrl,
+    id
+    imageUrl
     description
+    createdAt
+    user {
+      id
+      displayName
+      profileImage
+    }
   }
 }`;
 
