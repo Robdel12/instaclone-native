@@ -1,5 +1,5 @@
 import React from 'react';
-import Post from './Post';
+import Photo from './Photo';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -22,25 +22,19 @@ class ListPage extends React.Component {
     }
 
     return (
-      <View>
-        <ScrollView>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              }}>
-              {this.props.data.allPhotos.map((post) =>
-                <Post key={post.id} post={post} />
-              )}
-          </View>
-        </ScrollView>
-        <Button
-          onPress={this.createPost}
-          title="Create Post"
-        />
-      </View>
+      <ScrollView>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          {this.props.data.allPhotos.map(photo => {
+            return <Photo key={photo.id} photo={photo} />;
+          })}
+        </View>
+      </ScrollView>
     )
   }
 
@@ -49,7 +43,13 @@ class ListPage extends React.Component {
   }
 }
 
-const FeedQuery = gql`query { allPhotos(orderBy: createdAt_DESC) { id imageUrl description } }`;
+const FeedQuery = gql`query {
+  allPhotos(orderBy: createdAt_DESC) {
+    id,
+    imageUrl,
+    description
+  }
+}`;
 
 const ListPageWithData = graphql(FeedQuery)(ListPage);
 

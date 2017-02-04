@@ -7,16 +7,10 @@ import { withRouter } from 'react-router';
 
 class Logout extends Component {
   componentDidMount() {
-    AsyncStorage.getItem('auth0IdToken').then(token =>{
-
-      if (!token) {
-        this.props.router.replace('/');
-      }
-
-      // remove token from local storage and reload page to reset apollo client
-      AsyncStorage.removeItem('auth0IdToken');
-      this.props.router.replace('/');
-    });
+    // remove token from local storage and reload page to reset apollo client
+    AsyncStorage.removeItem('auth0IdToken');
+    this.props.logout();
+    this.props.router.replace('/');
   }
 
   render () {

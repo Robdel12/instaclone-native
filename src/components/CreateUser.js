@@ -31,12 +31,6 @@ class CreateUser extends React.Component {
       return <Text>Loading...</Text>;
     }
 
-    // redirect if user is logged in or did not finish Auth0 Lock dialog
-    if (this.props.data.user || AsyncStorage.getItem('auth0IdToken') === null) {
-      console.warn('not a new user or already logged in');
-      this.props.router.replace('/');
-    }
-
     return (
       <Text>Woah</Text>
     );

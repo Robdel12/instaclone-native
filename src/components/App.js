@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import { withRouter, Link } from 'react-router-native';
-import LoginAuth0 from '../components/LoginAuth0';
+import { withRouter } from 'react-router-native';
+import Navigation from '../components/Navigation';
 import {
-  Button,
   Header,
   Container,
   Title,
   Content,
-  Spinner,
-  Footer,
-  FooterTab,
-  Icon,
-  Badge
+  Footer
 } from 'native-base';
 
 class App extends Component {
@@ -22,35 +17,18 @@ class App extends Component {
     data: React.PropTypes.object.isRequired,
   }
 
-  handlePress(path) {
-    this.props.router.push(path);
-  }
-
   render () {
-    let user = this.props.data.user;
-
     return (
       <Container>
         <Header>
           <Title>Instaclone</Title>
-          {!user &&
-            <Button transparent>
-                <LoginAuth0>
-                    Login
-                    <Icon name='ios-log-in' />
-                  </LoginAuth0>
-              </Button>
-            }
-            {user &&
-              <Button transparent onPress={this.handlePress.bind(this, '/logout')}>
-                  Logout
-                  <Icon name='ios-log-out' />
-                </Button>
-              }
         </Header>
-        <Content style={{marginTop: 100}}>
+        <Content style={{marginTop: 5}}>
           {this.props.children}
         </Content>
+        <Footer>
+          <Navigation isLoggedIn={this.props.isLoggedIn} handleToken={this.props.handleToken} />
+        </Footer>
       </Container>
     );
   }
