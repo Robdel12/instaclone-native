@@ -6,28 +6,24 @@ import {
   View
 } from 'react-native';
 import moment from 'moment';
+
 import {
   Card,
   CardItem,
 } from 'native-base';
 
 export default class Photo extends Component {
-  constructor(props) {
-    super(props);
-
-    this.photo = this.props.photo;
-  }
-
   static propTypes = {
-    Photo: React.PropTypes.object,
+    photo: React.PropTypes.object,
   }
 
   get formattedDate() {
-    return moment(this.photo.createdAt).format("MMM Do, YYYY");
+    return moment(this.props.photo.createdAt).format("MMM Do, YYYY");
   }
 
   render() {
     let user = this.props.user;
+    let photo = this.props.photo;
 
     return (
       <Card style={[styles.cardContainer, this.props.style]}>
@@ -43,10 +39,10 @@ export default class Photo extends Component {
           </View>
         </CardItem>
         <CardItem>
-          <Image style={{resizeMode: 'cover', width: 380, height: 380}} source={{uri: this.photo.imageUrl}} />
+          <Image style={{resizeMode: 'cover', width: 380, height: 380}} source={{uri: photo.imageUrl}} />
         </CardItem>
         <CardItem>
-          <Text>{this.photo.description}</Text>
+          <Text>{photo.description}</Text>
         </CardItem>
       </Card>
     );

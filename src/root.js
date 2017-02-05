@@ -18,6 +18,8 @@ import UserProfile from './components/UserProfile';
 import EditProfile from './components/EditProfile';
 import Logout from './components/Logout';
 
+import ListPageView from './components/presentational/ListPageView';
+
 export default class Root extends Component {
   constructor(props) {
     super(props);

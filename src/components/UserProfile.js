@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-// import Photo from '../components/presentational/Photo';
-// import Loading from './presentational/Loading';
-import Photo from '../components/Photo';
+import Photo from '../components/presentational/Photo';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { withRouter } from 'react-router-native';
@@ -9,6 +7,7 @@ import {
   Text,
   View,
   ScrollView,
+  StyleSheet
 } from 'react-native';
 
 import {
@@ -27,6 +26,8 @@ class UserProfile extends Component {
   }
 
   render () {
+    let user = this.props.data.user;
+
     if (this.props.data.loading) {
       return <Spinner />;
     }
@@ -41,16 +42,13 @@ class UserProfile extends Component {
 
     return (
       <ScrollView>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Button onPress={() => this.props.router.push('/logout')}>
-            Logout
-          </Button>
+        <View style={styles.container}>
+          <View style={styles.profileInfo}>
+            <Text>@{user.displayName}</Text>
+            <Button onPress={() => this.props.router.push('/logout')}>
+              Logout
+            </Button>
+          </View>
           {this.props.data.user.photos.map(photo => {
             return <Photo key={photo.id} photo={photo} user={this.props.data.user} />;
           })}
@@ -59,6 +57,19 @@ class UserProfile extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+
+  profileInfo: {
+    flexDirection: 'row'
+  }
+});
 
 const FeedQuery = gql`query {
   user {
