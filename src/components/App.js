@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-native';
 import Navigation from '../components/Navigation';
 import {
   View,
-  Text
+  Text,
+  StyleSheet
 } from 'react-native';
 import {
   Footer
@@ -27,8 +28,8 @@ class App extends Component {
   render () {
     return (
       <View style={{flex: 1}}>
-        <View style={{borderStyle: 'solid', borderBottomWidth: 1, borderColor: "#ddd", marginBottom: 10}}>
-          <Text style={{fontSize: 20, paddingTop: 25, paddingBottom: 10, alignSelf: 'center', textAlign: 'center'}}>Instaclone</Text>
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Instaclone</Text>
         </View>
         {this.props.children}
         <Navigation isLoggedIn={this.props.isLoggedIn} handleToken={this.props.handleToken} />
@@ -36,6 +37,23 @@ class App extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    borderStyle: 'solid',
+    borderBottomWidth: 1,
+    borderColor: "#ddd",
+    marginBottom: 10
+  },
+
+  headerText: {
+    fontSize: 20,
+    paddingTop: 25,
+    paddingBottom: 10,
+    alignSelf: 'center',
+    textAlign: 'center'
+  }
+});
 
 const userQuery = gql`
   query {

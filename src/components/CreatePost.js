@@ -52,7 +52,7 @@ class CreatePost extends Component {
   renderButton() {
     if (this.state.description && this.state.imageUrl) {
       return (
-        <Button  onPress={this.handleSubmit.bind(this)}>
+        <Button  onPress={this.handleSubmit.bind(this)} style={{marginTop: 15}}>
           Post
         </Button>
       );
@@ -66,7 +66,7 @@ class CreatePost extends Component {
       return (
         <Image
           source={{ uri: this.state.imageUrl }}
-          style={{flex: 1, width: 200, height: 200}}
+          style={{flex: 0, width: 200, height: 200, marginTop: 15}}
           />
       );
     }

@@ -22,6 +22,8 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
+src/env.js
+
 # Android/IJ
 #
 *.iml
