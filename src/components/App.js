@@ -4,10 +4,10 @@ import gql from 'graphql-tag';
 import { withRouter } from 'react-router-native';
 import Navigation from '../components/Navigation';
 import {
-  Header,
-  Container,
-  Title,
-  Content,
+  View,
+  Text
+} from 'react-native';
+import {
   Footer
 } from 'native-base';
 
@@ -17,19 +17,22 @@ class App extends Component {
     data: React.PropTypes.object.isRequired,
   }
 
+  componentWillUpdate(nextProps) {
+    if (nextProps.data.error) {
+      // try to catch a token expire
+      debugger;
+    }
+  }
+
   render () {
     return (
-      <Container>
-        <Header>
-          <Title>Instaclone</Title>
-        </Header>
-        <Content style={{marginTop: 5}}>
-          {this.props.children}
-        </Content>
-        <Footer>
-          <Navigation isLoggedIn={this.props.isLoggedIn} handleToken={this.props.handleToken} />
-        </Footer>
-      </Container>
+      <View style={{flex: 1}}>
+        <View style={{borderStyle: 'solid', borderBottomWidth: 1, borderColor: "#ddd", marginBottom: 10}}>
+          <Text style={{fontSize: 20, paddingTop: 25, paddingBottom: 10, alignSelf: 'center', textAlign: 'center'}}>Instaclone</Text>
+        </View>
+        {this.props.children}
+        <Navigation isLoggedIn={this.props.isLoggedIn} handleToken={this.props.handleToken} />
+      </View>
     );
   }
 }

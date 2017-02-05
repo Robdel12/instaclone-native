@@ -3,13 +3,20 @@ import { withRouter } from 'react-router-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { View, TextInput, Button, Image, Text } from 'react-native';
+import { View, TextInput, Image, Text } from 'react-native';
+
+import {
+  Input,
+  InputGroup,
+  Button
+} from 'native-base';
 
 class CreatePost extends Component {
 
   static propTypes = {
     router: React.PropTypes.object,
     mutate: React.PropTypes.func,
+    data: React.PropTypes.object
   }
 
   state = {
@@ -23,16 +30,18 @@ class CreatePost extends Component {
 
   render () {
     return (
-      <View>
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={this.handleInput.bind(this, 'description')}
-          placeholder={'Description'} />
+      <View style={{paddingHorizontal: 20}}>
+        <InputGroup>
+          <Input
+            onChangeText={this.handleInput.bind(this, 'description')}
+            placeholder={'Description'} />
+        </InputGroup>
 
-        <TextInput
-          style={{height: 40, borderColor: 'gray', borderWidth: 1}}
-          onChangeText={this.handleInput.bind(this, 'imageUrl')}
-          placeholder={'Image Url'} />
+        <InputGroup>
+          <Input
+            onChangeText={this.handleInput.bind(this, 'imageUrl')}
+            placeholder={'Image Url'} />
+        </InputGroup>
 
         {this.renderImage()}
         {this.renderButton()}
@@ -43,7 +52,9 @@ class CreatePost extends Component {
   renderButton() {
     if (this.state.description && this.state.imageUrl) {
       return (
-        <Button title={'Post'} onPress={this.handleSubmit} />
+        <Button  onPress={this.handleSubmit.bind(this)}>
+          Post
+        </Button>
       );
     }
 
@@ -62,24 +73,35 @@ class CreatePost extends Component {
     return null;
   }
 
-  handleSubmit = () => {
-    const {description, imageUrl} = this.state;
+  handleSubmit() {
+    let { description, imageUrl } = this.state;
 
-    this.props.mutate({variables: {description, imageUrl}})
+    this.props.mutate({ variables: { description, imageUrl, userId: this.props.data.user.id }})
       .then(() => {
-        this.props.router.push('/');
+        this.props.router.replace('/');
       });
   }
 }
 
-const addMutation = gql`
-  mutation ($description: String!, $imageUrl: String!){
-    createPost(description: $description, imageUrl: $imageUrl) {
+const createPost = gql`
+  mutation ($description: String!, $imageUrl: String!, $userId: ID!){
+    createPhoto(description: $description, imageUrl: $imageUrl, userId: $userId) {
       id
     }
   }
-`
+`;
 
-const PostWithMutation = graphql(addMutation)(withRouter(CreatePost));
+const userQuery = gql`
+  query {
+    user {
+      id,
+      name,
+      displayName,
+      profileImage
+    }
+  }
+`;
 
-export default PostWithMutation;
+export default graphql(createPost)(
+  graphql(userQuery, { options: { forceFetch: true }} )(withRouter(CreatePost))
+);

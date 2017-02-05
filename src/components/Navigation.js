@@ -44,7 +44,7 @@ class Navigation extends Component {
 
   render() {
     return (
-      <Footer>
+      <Footer style={{alignSelf: "center"}}>
         <FooterTab>
           <Button onPress={this.handlePress.bind(this, '/')}>
             Home
