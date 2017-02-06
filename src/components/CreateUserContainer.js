@@ -6,8 +6,9 @@ import {
 import { withRouter } from 'react-router';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import CreateUserView from '../components/presentational/CreateUserView';
 
-class CreateUser extends React.Component {
+class CreateUserContainer extends React.Component {
 
   static propTypes = {
     router: React.PropTypes.object.isRequired,
@@ -15,28 +16,12 @@ class CreateUser extends React.Component {
     data: React.PropTypes.object.isRequired,
   }
 
-  state = {
-    emailAddress: '',
-    name: '',
-    displayName: '',
-    profileImage: '',
-  }
-
-  get isDisabledBtn() {
-    return !this.state.emailAddress && !this.state.name && !this.state.displayName;
-  }
-
   render () {
-    if (this.props.data.loading) {
-      return <Text>Loading...</Text>;
-    }
+    return <CreatePostView isLoading={this.props.data.loading} handleSubmit={this.createUser} />;
 
-    return (
-      <Text>Woah</Text>
-    );
   }
 
-  createUser = () => {
+  createUser = (emailAddress, name, displayName, profileImage) => {
     const variables = {
       idToken: AsyncStorage.getItem('auth0IdToken'),
       emailAddress: this.state.emailAddress,
@@ -73,5 +58,5 @@ const userQuery = gql`
 `;
 
 export default graphql(createUser, {name: 'createUser'})(
-  graphql(userQuery, { options: { forceFetch: true }})(withRouter(CreateUser))
+  graphql(userQuery, { options: { forceFetch: true }})(withRouter(CreateUserContainer))
 );

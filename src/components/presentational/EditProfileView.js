@@ -2,17 +2,8 @@ import React, { Component } from 'react';
 import {
   Text
 } from 'react-native';
-// import Loading from './presentational/Loading';
-// import InputField from './InputField';
-import { withRouter } from 'react-router';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 
-class EditProfile extends Component {
-  static propTypes = {
-    data: React.PropTypes.object,
-  }
-
+class EditProfileView extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
       displayName: nextProps.data.user.displayName,
@@ -26,18 +17,13 @@ class EditProfile extends Component {
     this.setState({[stateKey]: event.target.value});
   }
 
-  handleSubmit = () => {
+  handeSubmit() {
     let { displayName, name, profileImage, emailAddress } = this.state;
-    let id = this.props.data.user.id;
 
-    this.props.mutate({ variables: { id: id, displayName, name, profileImage, emailAddress}}).then(() => {
-        this.props.router.push('/profile');
-      });
+    this.props.handeSubmit(displayName, name, profileImage, emailAddress);
   }
 
   render() {
-    let user = this.props.data.user;
-    let state = this.state;
     return <Text>TODO</Text>;
     // if (!user) {
     //   return <Loading />;
@@ -95,24 +81,3 @@ class EditProfile extends Component {
     // );
   }
 }
-
-const UserQuery = gql`query {
-  user {
-    id,
-    name,
-    displayName,
-    profileImage,
-    emailAddress
-  }
-}`;
-
-const UpdateUser = gql`
-  mutation ($id: ID!, $name: String!, $displayName: String!, $profileImage: String!, $emailAddress: String!){
-    updateUser(id: $id, name: $name, displayName: $displayName, profileImage: $profileImage, emailAddress: $emailAddress) {
-      id
-    }
-  }
-`;
-
-
-export default graphql(UpdateUser)(graphql(UserQuery)(withRouter(EditProfile)));

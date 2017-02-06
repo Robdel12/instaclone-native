@@ -11,11 +11,11 @@ import {
 import { checkUri } from './utils';
 
 import App from './components/App';
-import ListPage from './components/ListPage';
-import CreatePost from './components/CreatePost';
-import CreateUser from './components/CreateUser';
-import UserProfile from './components/UserProfile';
-import EditProfile from './components/EditProfile';
+import ListPageContainer from './components/ListPageContainer';
+import CreatePostContainer from './components/CreatePostContainer';
+import CreateUserContainer from './components/CreateUserContainer';
+import UserProfileContainer from './components/UserProfileContainer';
+import EditProfileContainer from './components/EditProfileContainer';
 import Logout from './components/Logout';
 
 import ListPageView from './components/presentational/ListPageView';
@@ -49,7 +49,6 @@ export default class Root extends Component {
 
     // this is only for better error messages
     checkUri(this.client.networkInterface);
-
   }
 
   get isLoggedIn() {
@@ -81,16 +80,16 @@ export default class Root extends Component {
       <ApolloProvider client={this.client}>
         <Router history={nativeHistory}>
           <Route path='/' component={(props) => <App isLoggedIn={this.isLoggedIn} handleToken={this.handleToken.bind(this)}>{props.children}</App>}>
-            <IndexRoute component={ListPage} />
-            <Route path='feed' component={ListPage} />
-            <Route path='new' component={CreatePost} onEnter={this.requireAuth.bind(this)} />
-            <Route path='signup' component={CreateUser} onEnter={this.isUser.bind(this)} />
-            <Route path='profile' component={UserProfile} onEnter={this.requireAuth.bind(this)}>
-              <IndexRoute component={UserProfile} />
-              <Route path='edit' component={EditProfile} />
+            <IndexRoute component={ListPageContainer} />
+            <Route path='feed' component={ListPageContainer} />
+            <Route path='new' component={CreatePostContainer} onEnter={this.requireAuth.bind(this)} />
+            <Route path='signup' component={CreateUserContainer} onEnter={this.isUser.bind(this)} />
+            <Route path='profile' component={UserProfileContainer} onEnter={this.requireAuth.bind(this)}>
+              <IndexRoute component={UserProfileContainer} />
+              <Route path='edit' component={EditProfileContainer} />
             </Route>
             <Route path='logout' component={() => <Logout logout={this.handleToken.bind(this)} />} />
-            </Route>
+          </Route>
         </Router>
       </ApolloProvider>
     );

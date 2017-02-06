@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-native';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
-
 import { View, TextInput, Image, Text } from 'react-native';
 
 import {
@@ -11,14 +7,7 @@ import {
   Button
 } from 'native-base';
 
-class CreatePost extends Component {
-
-  static propTypes = {
-    router: React.PropTypes.object,
-    mutate: React.PropTypes.func,
-    data: React.PropTypes.object
-  }
-
+export default class CreatePost extends Component {
   state = {
     description: '',
     imageUrl: '',
@@ -74,34 +63,9 @@ class CreatePost extends Component {
   }
 
   handleSubmit() {
+    // todo change to args
     let { description, imageUrl } = this.state;
 
-    this.props.mutate({ variables: { description, imageUrl, userId: this.props.data.user.id }})
-      .then(() => {
-        this.props.router.replace('/');
-      });
+    this.props.handleSubmit(description, imageUrl);
   }
 }
-
-const createPost = gql`
-  mutation ($description: String!, $imageUrl: String!, $userId: ID!){
-    createPhoto(description: $description, imageUrl: $imageUrl, userId: $userId) {
-      id
-    }
-  }
-`;
-
-const userQuery = gql`
-  query {
-    user {
-      id,
-      name,
-      displayName,
-      profileImage
-    }
-  }
-`;
-
-export default graphql(createPost)(
-  graphql(userQuery, { options: { forceFetch: true }} )(withRouter(CreatePost))
-);
