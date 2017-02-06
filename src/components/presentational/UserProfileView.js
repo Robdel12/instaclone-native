@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { withRouter } from 'react-router-native';
 import {
   Text,
   View,
@@ -12,37 +13,41 @@ import {
   Button
 } from 'native-base';
 
-const UserProfileView = (props) => {
-  if (props.data.loading) {
-    return <Spinner />;
-  }
+class UserProfileView extends Component {
+  render(){
+    if (this.props.data.loading) {
+      return <Spinner />;
+    }
 
-  if (!props.isLoggedIn) {
-    return (<Text>You must login to see your profile</Text>);
-  }
+    if (!this.props.isLoggedIn) {
+      return (<Text>You must login to see your profile</Text>);
+    }
 
-  if (props.data.error) {
-    this.props.router.push('/');
-  }
-  // debugger;
-  let user = props.data.user;
+    if (this.props.data.error) {
+      this.props.router.push('/');
+    }
+    // debugger;
+    let user = this.props.data.user;
 
-  return (
-
-    <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.profileInfo}>
-          <Text>@{user.displayName}</Text>
-          <Button onPress={() => this.props.router.push('/logout')}>
-            Logout
-          </Button>
+    return (
+      <ScrollView>
+        <View style={styles.container}>
+          <View style={styles.profileInfo}>
+            <Text style={{marginRight: 5}}>@{user.displayName}</Text>
+            <Button onPress={() => this.props.router.replace('/logout')}>
+              Logout
+            </Button>
+            <Button onPress={() => this.props.router.replace('/profile/edit')}>
+              Edit Profile
+            </Button>
+          </View>
+          {this.props.data.user.photos.map(photo => {
+            return <Photo key={photo.id} photo={photo} user={this.props.data.user} />;
+          })}
         </View>
-        {props.data.user.photos.map(photo => {
-          return <Photo key={photo.id} photo={photo} user={props.data.user} />;
-        })}
-      </View>
-    </ScrollView>
-  );
+      </ScrollView>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -59,4 +64,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default UserProfileView;
+export default withRouter(UserProfileView);

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import EditProfileView from '../components/presentational/EditProfileView';
 
 class EditProfileContainer extends Component {
   static propTypes = {
@@ -17,7 +18,7 @@ class EditProfileContainer extends Component {
   }
 
   render() {
-    return <EditProfileView handleSubmit={this.handleSubmit} />;
+    return <EditProfileView data={this.props.data} handleSubmit={this.handleSubmit} />;
   }
 }
 

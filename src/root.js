@@ -84,7 +84,7 @@ export default class Root extends Component {
             <Route path='feed' component={ListPageContainer} />
             <Route path='new' component={CreatePostContainer} onEnter={this.requireAuth.bind(this)} />
             <Route path='signup' component={CreateUserContainer} onEnter={this.isUser.bind(this)} />
-            <Route path='profile' component={UserProfileContainer} onEnter={this.requireAuth.bind(this)}>
+            <Route path='profile'component={ProfileComponent} onEnter={this.requireAuth.bind(this)}>
               <IndexRoute component={UserProfileContainer} />
               <Route path='edit' component={EditProfileContainer} />
             </Route>
@@ -95,3 +95,9 @@ export default class Root extends Component {
     );
   }
 }
+
+// Hack to get around router requiring a component in native?
+// Web react router doesn't need a component prop on block components
+const ProfileComponent = (props) => {
+  return props.children;
+};

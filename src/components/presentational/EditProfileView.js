@@ -1,83 +1,87 @@
 import React, { Component } from 'react';
 import {
-  Text
+  View
 } from 'react-native';
 
-class EditProfileView extends Component {
+import {
+  Input,
+  InputGroup,
+  Spinner,
+  Button,
+} from 'native-base';
+
+export default class EditProfileView extends Component {
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      displayName: nextProps.data.user.displayName,
-      name: nextProps.data.user.name,
-      profileImage: nextProps.data.user.profileImage,
-      emailAddress: nextProps.data.user.emailAddress
-    });
+    if (nextProps.data.user) {
+      this.setState({
+        displayName: nextProps.data.user.displayName,
+        name: nextProps.data.user.name,
+        profileImage: nextProps.data.user.profileImage,
+        emailAddress: nextProps.data.user.emailAddress
+      });
+    }
   }
 
-  setInput = (stateKey, event) => {
-    this.setState({[stateKey]: event.target.value});
+  state = {
+    displayName: '',
+    name: '',
+    profileImage: '',
+    emailAddress: ''
   }
 
-  handeSubmit() {
+  setInput = (stateKey, value) => {
+    this.setState({[stateKey]: value});
+  }
+
+  handleSubmit() {
     let { displayName, name, profileImage, emailAddress } = this.state;
 
-    this.props.handeSubmit(displayName, name, profileImage, emailAddress);
+    this.props.handleSubmit(displayName, name, profileImage, emailAddress);
   }
 
   render() {
-    return <Text>TODO</Text>;
-    // if (!user) {
-    //   return <Loading />;
-    // }
+    if (!this.props.data.user) {
+      return <Spinner />;
+    }
 
-    // return (
-    //   <div className="columns" style={{maxWidth: "1040px", margin: "0 auto"}}>
-    //     <div className="column">
-    //       <InputField
-    //         iconClass="fa-user"
-    //         stateKey="displayName"
-    //         labelName="Username"
-    //         placeholder="@somebody"
-    //         value={state.displayName}
-    //         handleChange={this.setInput}
-    //         />
+    return (
+      <View style={{paddingHorizontal: 20}}>
+        <InputGroup>
+          <Input
+            onChangeText={this.setInput.bind(this, 'displayName')}
+            value={this.state.displayName}
+            placeholder={'@somebody'}
+            />
+        </InputGroup>
 
-    //       <InputField
-    //         iconClass="fa-user"
-    //         stateKey="name"
-    //         labelName="Name"
-    //         placeholder="Jimmy Doe"
-    //         value={state.name}
-    //         handleChange={this.setInput}
-    //         />
+        <InputGroup>
+          <Input
+            onChangeText={this.setInput.bind(this, 'name')}
+            value={this.state.name}
+            placeholder={'Jimmy doe'}
+            />
+        </InputGroup>
 
-    //       <InputField
-    //         iconClass="fa-picture-o"
-    //         stateKey="profileImage"
-    //         labelName="Profile Image"
-    //         placeholder="example.com/image.png"
-    //         value={state.profileImage}
-    //         handleChange={this.setInput}
-    //         />
+        <InputGroup>
+          <Input
+            onChangeText={this.setInput.bind(this, 'profileImage')}
+            value={this.state.profileImage}
+            placeholder={'example.com/profileimage.jpg'}
+            />
+        </InputGroup>
 
-    //       <InputField
-    //         iconClass="fa-envelope-o"
-    //         stateKey="emailAddress"
-    //         labelName="Email"
-    //         placeholder="jimmy@example.com"
-    //         value={state.emailAddress}
-    //         handleChange={this.setInput}
-    //         />
+        <InputGroup>
+          <Input
+            onChangeText={this.setInput.bind(this, 'emailAddress')}
+            value={this.state.emailAddress}
+            placeholder={'jimmy@example.com'}
+            />
+        </InputGroup>
 
-    //       <div className="control is-grouped">
-    //         <p className="control">
-    //           <button className="button is-primary" onClick={this.handleSubmit}>Submit</button>
-    //         </p>
-    //         <p className="control">
-    //           <button className="button is-link">Cancel</button>
-    //         </p>
-    //       </div>
-    //     </div>
-    //   </div>
-    // );
+        <Button onPress={this.handleSubmit.bind(this)} style={{marginTop: 15}}>
+          Update Profile
+        </Button>
+      </View>
+    );
   }
 }
