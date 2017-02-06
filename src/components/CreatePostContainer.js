@@ -16,7 +16,7 @@ class CreatePostContainer extends Component {
     return <CreatePostView handleSubmit={this.handleSubmit} />;
   }
 
-  handleSubmit(description, imageUrl) {
+  handleSubmit = (description, imageUrl) => {
     this.props.mutate({ variables: { description, imageUrl, userId: this.props.data.user.id }})
       .then(() => {
         this.props.router.replace('/');

@@ -63,7 +63,6 @@ export default class CreatePost extends Component {
   }
 
   handleSubmit() {
-    // todo change to args
     let { description, imageUrl } = this.state;
 
     this.props.handleSubmit(description, imageUrl);
